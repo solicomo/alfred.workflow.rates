@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.solicomo.alfred.workflow.rates</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>4ACEF39F-2AEA-4F39-88CD-407D2D024B8F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6FC3D350-8DFD-4451-89FE-50C5E2608ACF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Soli Como</string>
+	<key>description</key>
+	<string>Converts currency with Fixer.io's free JSON API.</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Rates</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>1</integer>
+				<key>argument</key>
+				<integer>1</integer>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>0</integer>
+				<key>hotstring</key>
+				<string></string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>4ACEF39F-2AEA-4F39-88CD-407D2D024B8F</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>100</integer>
+				<key>keyword</key>
+				<string>r</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>1</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string>Converting ...</string>
+				<key>script</key>
+				<string>require_once('rates.php');
+main("{query}");</string>
+				<key>subtext</key>
+				<string>Convert rates from one of the many currencies available</string>
+				<key>title</key>
+				<string>Convert rates</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>6FC3D350-8DFD-4451-89FE-50C5E2608ACF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>
+Rates
+=====
+
+A Alfred workflow which converts currency with [Fixer.io's free JSON API](http://fixer.io).
+	</string>
+	<key>uidata</key>
+	<dict>
+		<key>4ACEF39F-2AEA-4F39-88CD-407D2D024B8F</key>
+		<dict>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+		<key>6FC3D350-8DFD-4451-89FE-50C5E2608ACF</key>
+		<dict>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>https://solicomo.com</string>
+</dict>
+</plist>
