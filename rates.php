@@ -3,47 +3,52 @@
 * Name: 		Rates
 * Description: 	A Alfred workflow which converts currency with Fixer.io's free JSON API
 * 				(http://fixer.io).
-* Author: 		Soli Como (@solicomo)
-* Revised: 		2016-05-12
-* Version:		0.1.0
+* Author: 		Soli Como (@solicomo)  Kyle He (@kyleehee)
+* Revised: 		2017-10-17
+* Version:		0.2.0
 */
 
 require_once("workflows.php");
 
-function safe_array_access($args) {
-	$argc = func_num_args();
-	$argv = func_get_args();
-	$iter = $args;
-
-	for($i = 1; $i < $argc; $i++) {
-		if (is_array($iter) && array_key_exists($argv[$i], $iter) && isset($iter[$argv[$i]])) {
-			$iter = $iter[$argv[$i]];
-		} else {
-			return(null);
-		}
-	}
-	return($iter);
-}
 
 function convert($wf, $amount, $from, $to) {
 	$data = $wf->request("http://api.fixer.io/latest?base=${from}&symbols=${to}");
-	$rates = safe_array_access(json_decode($data, true), 'rates', $to);
-	if (isset($rates)) {
-		return ($amount * $rates);
-	} else {
-		return null;
+	$rates = json_decode($data, true);
+	if (is_null($rates) || !isset($rates['rates'])) {
+		throw new Exception("Can not get currency rates");
 	}
+	$ret = array();
+	foreach ($rates['rates'] as $cur => $rate) {
+		$ret[$cur] = $rate * $amount;
+	}
+	return $ret;
 }
 
 function main($query) {
-	$args = array_filter(explode(" ", trim($query)));
+	$args = array_filter(explode(" ", trim(strtoupper($query))));
 	$argc = count($args);
 	$wf = new Workflows();
 
 	switch($argc) {
 	case 3:
-		$result = convert($wf, $args[0], strtoupper($args[1]), strtoupper($args[2]));
-		$wf->result('rates_result', 'result', "$args[0] $args[1] = $result $args[2]", '', 'icon.png', 'yes', '');
+		$fromValue = floatval($args[0]);
+		$fromCurrency = $args[1];
+		$toCurrencys = $args[2];
+		try {
+			$results = convert($wf, $fromValue, $fromCurrency, $toCurrencys);
+		} catch (Exception $e) {
+			$wf->result('rates_2', 'error', $e->getMessage(), "", 'icon.png', 'no', '');
+		}
+
+		foreach (explode(',', $toCurrencys) as $cur) {
+			if (isset($results[$cur])) {
+				$wf->result("rates_result_$i", 'result',
+					"$fromValue $fromCurrency = $result $cur", '', 'icon.png', 'yes', '');
+			} else {
+				$wf->result("rates_result_$i", 'error',
+					"Can not convert to $cur", 'Unacceptable Currency', 'icon.png', 'no', '');
+			}
+		}
 		break;
 	case 0:
 	case 1:
@@ -52,7 +57,7 @@ function main($query) {
 		$wf->result('rates_0', 'usage', 'Rates', "USAGE: r COUNT FROM TO", 'icon.png', 'no', '1 USD CNY');
 		break;
 	}
-	
+
 	echo $wf->toxml();
 }
 
