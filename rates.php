@@ -42,6 +42,7 @@ function main($query) {
 
 		foreach (explode(',', $toCurrencys) as $cur) {
 			if (isset($results[$cur])) {
+				$result = $results[$cur];
 				$wf->result("rates_result_$i", 'result',
 					"$fromValue $fromCurrency = $result $cur", '', 'icon.png', 'yes', '');
 			} else {
@@ -54,7 +55,7 @@ function main($query) {
 	case 1:
 	case 2:
 	default:
-		$wf->result('rates_0', 'usage', 'Rates', "USAGE: r COUNT FROM TO", 'icon.png', 'no', '1 USD CNY');
+		$wf->result('rates_0', 'usage', 'Rates', "USAGE: r COUNT FROM TO1,TO2,...", 'icon.png', 'no', '1 USD CNY,CAD');
 		break;
 	}
 
